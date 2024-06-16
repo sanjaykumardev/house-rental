@@ -42,6 +42,13 @@ const Payment = () => {
     }
   };
 
+
+  
+
+
+
+
+
   return (
     <>
       <Navbar />

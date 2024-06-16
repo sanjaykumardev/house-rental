@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const path = require('path');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 dotenv.config();
 
 const PORT = 5000;
@@ -189,6 +190,68 @@ app.post('/addeddetails', async(req,res) =>{
   }
 })
 
+// Payment Endpoint
+app.post('/create-payment-intent', async (req, res) => {
+  const { houseId, email, phonenumber, startdate, enddate } = req.body;
+
+  // Calculate  house price and the number of days
+  connection.query('SELECT price FROM houses WHERE id = ?', [houseId], async (err, result) => {
+    if (err) {
+      console.error('Error querying data from MySQL:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (result.length > 0) {
+      const housePrice = result[0].price;
+      const days = Math.ceil((new Date(enddate) - new Date(startdate)) / (1000 * 60 * 60 * 24));
+      const totalPrice = housePrice * days * 100; 
+
+      try {
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: totalPrice,
+          currency: 'usd',
+          metadata: { houseId, email, phonenumber, startdate, enddate }
+        });
+
+        res.json({ clientSecret: paymentIntent.client_secret });
+      } catch (error) {
+        console.error('Error creating payment intent:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    } else {
+      res.status(404).json({ error: 'House not found' });
+    }
+  });
+});
+
+// Payment Confirmation Endpoint
+app.post('/confirm-payment', async (req, res) => {
+  const { paymentIntentId, houseId, email } = req.body;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    if (paymentIntent.status === 'succeeded') {
+      connection.query(
+        'INSERT INTO payments (houseId, orderId, email, amount, status) VALUES (?, ?, ?, ?, ?)',
+        [houseId, paymentIntent.id, email, paymentIntent.amount,paymentIntent.currency.toUpperCase(), paymentIntent.status],
+        (err, result) => {
+          if (err) {
+            console.error('Error inserting data into MySQL:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+
+          res.json({ message: 'Payment confirmed and data saved successfully' });
+        }
+      );
+    } else {
+      res.status(400).json({ error: 'Payment not successful' });
+    }
+  } catch (error) {
+    console.error('Error confirming payment:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
