@@ -65,7 +65,7 @@ const Cart = () => {
                     <p className="text-gray-600"><strong>Address:</strong> {item.address}</p>
                     <div className="flex justify-between mt-4">
                       <button className="bg-red-500 text-white px-4 py-2 rounded">
-                        <Link to={`/pay/${item.id}`}>
+                        <Link to={`/desp/${item.id}`}>
                           Payment
                         </Link>
                       </button>

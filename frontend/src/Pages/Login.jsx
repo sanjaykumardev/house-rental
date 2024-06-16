@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useContext } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ function Login() {
       localStorage.setItem('token', token);
       setPassData(username); 
       toast.success('Login successful', { position: "top-center" }); 
-      console.log(passdata);
+      // console.log(passdata);
     if (role === 'Buyer') {
       navigate('/houselist');
     } 

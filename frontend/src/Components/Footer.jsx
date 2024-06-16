@@ -10,7 +10,7 @@ const Footer = () => {
             <svg className="mr-2 h-8" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
             <image href={pic4} width="33" height="33" />
             </svg>
-            HouseRental
+            Vivant
           </a>
           <p className="my-6 text-gray-500 dark:text-gray-400">
             Providing exceptional house rental services with a wide range of options to choose from.

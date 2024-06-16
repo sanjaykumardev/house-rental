@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <img className="h-8 mr-2 ml-2" src={pic4} alt="Logo" />
           <Link to="/home" className="text-2xl font-bold">
-            House Rental
+          <span className='text-3xl '>V</span>ivant
           </Link>
         </div>
         <div className="flex justify-end space-x-2 relative items-center">

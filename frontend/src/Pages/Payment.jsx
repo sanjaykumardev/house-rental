@@ -1,71 +1,47 @@
+/* eslint-disable no-unused-vars */
 import { useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import houses from '../models/data';
 import { ToastContainer } from 'react-toastify';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 // import { Contact } from 'lucide-react';
 import { UserContext } from '../models/UserContext';
-import  Axios  from 'axios';
+// import  Axios  from 'axios';
 // import {loadStripe} from '@stripe/stripe-js';
 
 const Payment = () => {
   const { houseId } = useParams();
   const house = houses.find(house => house.id === houseId);
-  const [email, setEmail] = useState('');
-  const [phonenumber, setPhoneNumber] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [phonenumber, setPhoneNumber] = useState('');
   const {indate , outdate, personcount, personage} = useContext(UserContext);
-  // const serviceTax = house.price * 0.1;
-  // const gstTax = house.price * 0.05;
-  // const netTax = serviceTax + gstTax;
-  // const totalPrice = house.price + netTax;
-
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    
-    try {
-      const res = await Axios.post('http://localhost:5000/addeddetails', {
-        phonenumber ,
-        email
-      });
-      
-      console.log(res);
-      setPhoneNumber("");
-      setEmail("");
-     
-      toast.success('Login successful', { position: "top-center" }); 
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Login failed. Please check your credentials', { position: "top-center" }); 
-    }
-  };
-
-
-  
 
 
 
-
+ 
 
   return (
     <>
       <Navbar />
-      <div className=" p-6 md:p-12">
-        <div className="flex flex-wrap rounded-lg shadow-lg overflow-hidden -mx-4 items-start justify-center">
+      <div className=" p-6 md:p-12 md:px-[500px]">
+        <div className="flex flex-wrap rounded-lg  -mx-4 items-start justify-center">
           <div className=" p-4 ">
-            <h2 className="text-2xl font-bold mb-4">House Details</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">Payment Information</h2>
             <ul className="list-none mb-4">
               <li className="mb-2">
-                <span className="text-gray-700 font-semibold">House ID:</span> {houseId}
+                <span className="text-gray-200 font-semibold">House ID:</span> {houseId}
               </li>
-              <div className="mb-4">
+              <div className="mb-4 ">
                 <img
                   src={house.imgUrl}
                   alt={house.title}
                   className="w-full h-[40vh] object-cover rounded-lg shadow-lg"
                 />
+              </div>
+              <div>
+                
               </div>
               <li className="mb-2">
                 <span className="text-gray-700 text-lg font-semibold">House Name: </span> {house.title}
@@ -73,6 +49,11 @@ const Payment = () => {
               <li className="mb-2">
                 <span className="text-gray-700  text-lg font-semibold">Price:</span> {house.price}
               </li>
+              {/* <div className='flex flex-col '>
+              <li className="mb-2">
+                <span className="text-gray-700  text-lg font-semibold">Price:</span> {house.price}
+              </li>
+              </div> */}
             </ul>
             <div className="mt-4">
               <h2 className="text-xl font-semibold text-gray-800">Facilities</h2>
@@ -112,69 +93,21 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className=" md:w-1/2 xl:w-[40%] ml-40 p-4">
-            <h2 className="text-2xl font-bold mb-4 text-center">Payment Information</h2>
-            <div className="flex mb-4 justify-around text-3xl">
-              <i className="fa fa-cc-visa" />
-              <i className="fa fa-cc-mastercard" />
-              <i className="fa fa-cc-amex" />
-              <i className="fa fa-cc-paypal" />
-            </div>
-            <form id="payment-form" onClick={handleFormSubmit}>
-             
-              <div className="mb-4 ">
-                <label className="block text-gray-700 mb-2" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-2 text-sm text-gray-700 border border-gray-300 rounded"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2" htmlFor="phoneNumber">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  value={phonenumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="w-full p-2 text-sm text-gray-700 border border-gray-300 rounded"
-                />
-              </div>
-              {/* <div className="mb-4">
-                <p className="text-gray-700 mb-2">Price: {house.price}</p>
-                <p className="text-gray-700 mb-2">Service Tax (10%): ${serviceTax.toFixed(2)}</p>
-                <p className="text-gray-700 mb-2">GST Tax (5%): ${gstTax.toFixed(2)}</p>
-                <p className="text-gray-700 mb-2">Net Tax: ${netTax.toFixed(2)}</p>
-                <p className="text-gray-700 mb-2">Total Price: ${totalPrice}</p>
-              </div> */}
-             
-              <p className="text-gray-700 mt-4">
-                Secure your rental today with our easy online payment options, including credit card, debit card, and PayPal.
-              </p>
-              
-              <p className="text-gray-700 mt-4">
-                Secure your rental today with our easy online payment options, including credit card, debit card, and PayPal.
-              </p>
-              <p className="text-gray-700 mt-2">
-                By proceeding with your rental, you agree to our terms and conditions, including our cancellation and refund policies.
-              </p>
-            <div className=' mt-[60%] ml-[80%]'>
-            <button id="submit" className="w-full  bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" >
+            <div className=' text-center'>
+            <button id="submit" className="w-[20]  bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" >
                   Pay Now
                 </button>
             </div>
-            </form>
           </div>
+
+          
+          
+           
+         
+          </div>
+          
         </div>
-      </div>
+      
       <ToastContainer/>
       {/* <Contact/> */}
       <Footer />
